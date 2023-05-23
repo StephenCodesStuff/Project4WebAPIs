@@ -47,6 +47,11 @@ function endQuiz() {
     questionElement.textContent = "You did it";
     paraEl.style.display = "";
     paraEl.textContent = "You Score is " + timerCount; 
+    var formElement = document.createElement("form");
+    var input = document.createElement('input')
+
+    formElement.appendChild(input);
+    document.getElementById(".rules").appendChild(formElement);
 }
 
 function startgame(){
