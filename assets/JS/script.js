@@ -1,16 +1,17 @@
 // alert("working")
-var quizTime = document.getElementById("timer")
-var startQuiz = document.querySelector(".start-quiz")
-var questionElement = document.getElementById("question")
-var paraEl = document.querySelector(".rules")
-var buttonEl = document.querySelector(".bttn")
-var displayMessage = document.querySelector(".display-message")
+var quizTime = document.getElementById("timer");
+var startQuiz = document.querySelector(".start-quiz");
+var questionElement = document.getElementById("question");
+var paraEl = document.querySelector(".rules");
+var buttonEl = document.querySelector(".bttn");
+var displayMessage = document.querySelector(".display-message");
+var hiddenForm = document.getElementById("hidden-form");   
 var timer;
 var timerCount = 1000;
 var questionCount = 0;
 var questions = [{
         question: "Commonly used data types DO NOT include",
-        answers: ["Strings", "Boleens", "Alerts", "Numbers"],
+        answers: ["Strings", "Booleans", "Alerts", "Numbers"],
         // answer1: "Stephen",
         // answer2: "Paul",
         // answer3: "George",
@@ -47,12 +48,18 @@ function endQuiz() {
     questionElement.textContent = "You did it";
     paraEl.style.display = "";
     paraEl.textContent = "You Score is " + timerCount; 
-    var formElement = document.createElement("form");
-    var input = document.createElement('input')
+//     var formElement = document.createElement("form");
+//     var input = document.createElement('input')
 
-    formElement.appendChild(input);
-    document.getElementById(".rules").appendChild(formElement);
+//     formElement.appendChild(input);
+//     document.getElementById("submit-form").appendChild(formElement);
+    
+    console.log(hiddenForm)    
+    hiddenForm.classList.remove("hidden");
+
 }
+
+
 
 function startgame(){
     startQuiz.style.display = "none";
@@ -125,7 +132,7 @@ function nextQuestion(e) {
 
     } else {
         
-        timerCount -= 10
+        timerCount -= 15
         displayIncorrect()
     }
     questionCount ++
@@ -154,6 +161,22 @@ function displayIncorrect(){
 }
 startQuiz.addEventListener("click", startgame);
 document.getElementById("answerContainer").addEventListener("click", nextQuestion);
+
+var saveButton = document.getElementById("intials-button");
+var intials = document.getElementById("intials");
+saveButton.addEventListener("click", function(event) {
+    event.preventDefault();
+    
+    var highScoreObj= {
+      highScore: timerCount,
+      intials: intials.value.trim()
+    };
+    
+    localStorage.setItem("highScoreString", JSON.stringify(highScoreObj));
+    console.log(highScoreObj)
+    window.open("highscore.html");
+    })
+
 
 
 
