@@ -4,51 +4,55 @@ var startQuiz = document.querySelector(".start-quiz")
 var questionElement = document.getElementById("question")
 var paraEl = document.querySelector(".rules")
 var buttonEl = document.querySelector(".bttn")
+var displayMessage = document.querySelector(".display-message")
 var timer;
-var timerCount;
+var timerCount = 1000;
 var questionCount = 0;
 var questions = [{
-        question: "My name is?",
-        answers: ["Stephen", "paul", "george", "tom"],
+        question: "Commonly used data types DO NOT include",
+        answers: ["Strings", "Boleens", "Alerts", "Numbers"],
         // answer1: "Stephen",
         // answer2: "Paul",
         // answer3: "George",
         // answer4: "Tom",
-        correctAns: "Stephen", 
+        correctAns: "Alerts", 
     },
     {
-        question: "My last name is?",
-        answers: ["Stephen", "Cook", "george", "tom"],
+        question: "Arrays can be used to store",
+        answers: ["Strings and Numbers", "Objects", "Other Arrays", "All of the Above"],
         // answer1: "Plumber",
         // answer2: "Cook",
         // answer3: "Baker",
         // answer4: "Tanner",
-        correctAns: "Cook",
+        correctAns: "All of the Above",
     },
     {
-        question: "My pet's name?",
-        answers: ["Stephen", "paul", "Jean-Luc", "tom"],
+        question: "To store objects in your browser's local storage, you must first",
+        answers: ["Convert it to a string", "Send the object to local storage", "Eat, Pray, Love", "Parse the Object"],
         // answer1: "Crusher",
         // answer2: "Data",
         // answer3: "Jean-Luc",
         // answer4: "Jordie",
-        correctAns: "Jean-Luc",
+        correctAns: "Convert it to a string",
     },
 ];
-console.log(questions);
+// console.log(questions);
 
+quizTime.textContent = "Timer " + timerCount;
 
 function endQuiz() {
     console.log ("Quiz Ending")
     document.getElementById("answerContainer").innerHTML=""
-    console.log (timerCount)
-    questionElement.textContent = "Your Score Is " + timerCount
+    // console.log (timerCount)
+    questionElement.textContent = "You did it";
+    paraEl.style.display = "";
+    paraEl.textContent = "You Score is " + timerCount; 
 }
 
 function startgame(){
     startQuiz.style.display = "none";
     paraEl.style.display = "none";
-    timerCount = 10;
+    // timerCount = 1000;
     setTime()
     setQuiz()
 }
@@ -57,15 +61,16 @@ function setTime() {
     timer = setInterval(function(){
         // console.log(timer + "what is this")
         timerCount--;
-        quizTime.textContent = timerCount;
+        quizTime.textContent = "Timer " + timerCount;
 
         if (questionCount === questions.length){
             clearInterval(timer);
             endQuiz()
             return timerCount;
         }
-        if(timerCount === 0){
+        if(timerCount <= 0){
             clearInterval(timer);
+            timerCount = 0
             endQuiz();
         }
 
@@ -76,8 +81,8 @@ function setQuiz() {
     // for (var i = 0; i < questions.length; i++) { 
     //     console.log(questions[i]);
     // }
-    console.log(questions.length)
-    console.log(questionCount)
+    // console.log(questions.length)
+    // console.log(questionCount)
     if (questionCount === questions.length){
         // endQuiz()
         return
@@ -88,18 +93,19 @@ function setQuiz() {
     var questionText = questionChoice.question;
     // console.log(questionText);
     questionElement.textContent = questionText;
+    questionElement.style.display ="text-align: left;" 
     for (var i = 0; i < questions[questionCount].answers.length; i++){
-        console.log(questions[questionCount].answers[i]);
+        // console.log(questions[questionCount].answers[i]);
         var choiceButton = document.createElement("button");
         choiceButton.textContent = questions[questionCount].answers[i];
-        choiceButton.style.display = "block";
+        // choiceButton.style.display = "block";
         choiceButton.classList.add("answerBttn")
         document.getElementById("answerContainer").append(choiceButton);
 
     }
 
 
-    console.log("Next Question Running")
+    // console.log("Next Question Running")
 }
 
 function nextQuestion(e) {
@@ -107,12 +113,15 @@ function nextQuestion(e) {
     if (!e.target.matches(".answerBttn")) {
         return
     }
-    console.log ("working")
+    // console.log ("working")
     if (e.target.textContent === questions[questionCount].correctAns) {
         // questionCount ++
-        console.log ("correct answer")
+        displayCorrect()
+
     } else {
-        console.log ("wrong answer")
+        
+        timerCount -= 10
+        displayIncorrect()
     }
     questionCount ++
     
@@ -120,7 +129,24 @@ function nextQuestion(e) {
 }
 
 
+function displayCorrect(){
+    console.log ("correct answer")
+    displayMessage.textContent = "Correct"
+    setTimeout(function(){ 
+        displayMessage.textContent = "";
 
+    }, 500)
+    return
+}
+function displayIncorrect(){
+    console.log ("wrong answer")
+    displayMessage.textContent = "Incorrect"
+    setTimeout(function(){ 
+        displayMessage.textContent = "";
+
+    }, 500)
+    return
+}
 startQuiz.addEventListener("click", startgame);
 document.getElementById("answerContainer").addEventListener("click", nextQuestion);
 
