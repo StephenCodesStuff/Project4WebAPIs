@@ -7,7 +7,7 @@ var buttonEl = document.querySelector(".bttn");
 var displayMessage = document.querySelector(".display-message");
 var hiddenForm = document.getElementById("hidden-form");   
 var timer;
-var timerCount = 1000;
+var timerCount = 50;
 var questionCount = 0;
 var questions = [{
         question: "Commonly used data types DO NOT include",
@@ -167,14 +167,17 @@ var intials = document.getElementById("intials");
 saveButton.addEventListener("click", function(event) {
     event.preventDefault();
     
+    var highScoreArray = JSON.parse(localStorage.getItem("highScoreString")) || [];
+    
     var highScoreObj= {
       highScore: timerCount,
       intials: intials.value.trim()
     };
     
-    localStorage.setItem("highScoreString", JSON.stringify(highScoreObj));
-    console.log(highScoreObj)
-    window.open("highscore.html");
+    highScoreArray.push(highScoreObj)
+    localStorage.setItem("highScoreString", JSON.stringify(highScoreArray));
+    console.log(highScoreArray)
+    window.location.href = "highscore.html";
     })
 
 
